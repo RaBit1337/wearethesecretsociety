@@ -1,36 +1,7 @@
-// Main JavaScript file
+// Main JavaScript file (for index.html)
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    const burgerMenu = document.getElementById('burgerMenu');
-    const navLinks = document.getElementById('navLinks');
-    
-    // Toggle burger menu
-    burgerMenu.addEventListener('click', function() {
-        burgerMenu.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-    
-    // Close menu when clicking on a link
-    const links = navLinks.querySelectorAll('a');
-    links.forEach(link => {
-        link.addEventListener('click', function() {
-            burgerMenu.classList.remove('active');
-            navLinks.classList.remove('active');
-        });
-    });
-    
-    // Close menu when clicking outside
-    document.addEventListener('click', function(event) {
-        const isClickInsideNav = navLinks.contains(event.target);
-        const isClickOnBurger = burgerMenu.contains(event.target);
-        
-        if (!isClickInsideNav && !isClickOnBurger && navLinks.classList.contains('active')) {
-            burgerMenu.classList.remove('active');
-            navLinks.classList.remove('active');
-        }
-    });
-
     // Modal functionality
     const joinButton = document.getElementById('joinButton');
     const modalOverlay = document.getElementById('modalOverlay');
@@ -132,30 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.removeChild(link);
     }
 
-    // Download button functionality
-    const downloadButton = document.getElementById('downloadButton');
-    
-    // Show download button if there are existing submissions
-    function updateDownloadButton() {
-        const submissions = getStoredSubmissions();
-        if (submissions.length > 0) {
-            downloadButton.style.display = 'block';
-        } else {
-            downloadButton.style.display = 'none';
-        }
-    }
-
-    downloadButton.addEventListener('click', function() {
-        const submissions = getStoredSubmissions();
-        if (submissions.length === 0) {
-            alert('No submissions to download yet.');
-            return;
-        }
-        downloadCSV(submissions);
-    });
-
-    // Check for existing submissions on page load
-    updateDownloadButton();
 
     // Handle form submission
     joinForm.addEventListener('submit', function(event) {
@@ -180,10 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Save submission
-        const allSubmissions = saveSubmission(name, email, checkedEvents);
-        
-        // Show download button if it wasn't visible
-        updateDownloadButton();
+        saveSubmission(name, email, checkedEvents);
         
         console.log('Form submitted and saved:', { name, email, events: checkedEvents });
         alert(`Thank you for joining us, ${name}! Your information has been saved.`);
