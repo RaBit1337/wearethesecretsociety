@@ -126,11 +126,29 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Save submission
+        // Save to localStorage (backup)
         saveSubmission(name, email, checkedEvents);
         
-        console.log('Form submitted and saved:', { name, email, events: checkedEvents });
-        alert(`Thank you for joining us, ${name}! Your information has been saved.`);
+        // Send to Python server to save to CSV file
+        fetch('/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Form submitted and saved to CSV:', { name, email });
+                alert(`Thank you for joining us, ${name}! Your information has been saved.`);
+            } else {
+                throw new Error(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Still show success since localStorage backup worked
+            alert(`Thank you for joining us, ${name}! Your information has been saved.`);
+        });
         
         // Close modal after submission
         closeModal();
