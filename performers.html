@@ -17,7 +17,7 @@
             </button>
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">Performers</a></li>
+                <li><a href="performers.html">Performers</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
@@ -25,7 +25,7 @@
 
     <main>
         <section class="hero-center">
-            <button class="join-button" id="joinButton">JOIN US</button>
+            <button class="join-button" id="joinButton">Become a Performer</button>
         </section>
     </main>
 
@@ -44,13 +44,27 @@
                     <input type="email" id="userEmail" name="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="userPhone">Occupation</label>
+                    <label for="userOccupation">Occupation</label>
                     <select id="userOccupation" name="occupation" required>
+                        <option value="">Select occupation...</option>
                         <option value="artist">Artist</option>
-                        <option value="writer">DJ</option>
+                        <option value="dj">DJ</option>
                         <option value="musician">Musician</option>
-                        <option value="writer">Other</option>
-
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userGenre">Genre</label>
+                    <select id="userGenre" name="genre" required>
+                        <option value="">Select genre...</option>
+                        <option value="house">House</option>
+                        <option value="garage">Garage</option>
+                        <option value="dnb">Drum and Bass</option>
+                        <option value="dubstep">Dubstep</option>
+                        <option value="electro">Electro</option>
+                        <option value="techno">Techno</option>
+                        <option value="trance">Trance</option>
+                        <option value="other">Other</option>
                     </select>
                 </div>
                 <!--
@@ -69,7 +83,7 @@
                 </div>
                 -->
                 <div class="form-actions">
-                    <button type="submit" class="submit-button">Join us</button>
+                    <button type="submit" class="submit-button">Join Us</button>
                     <button type="button" class="cancel-button" id="cancelButton">Cancel</button>
                 </div>
             </form>
