@@ -6,3 +6,5 @@ Performer Backend DONE
 New Domain DONE
 Replace QR Code
 Shutdown or Redirect Old Site
+Cloudflare has a database implemenyation I can use
+Populate database
