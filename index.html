@@ -43,7 +43,90 @@
                     <label for="userEmail">Email</label>
                     <input type="email" id="userEmail" name="email" required>
                 </div>
-                <!--
+                <div class="form-group">
+                    <label for="userOccupation">Interested in</label>
+                    <select id="userOccupation" name="occupation" required>
+                        <option value="">Select...</option>
+                        <option value="events">Events</option>
+                        <option value="parties">Parties</option>
+                        <option value="performing">Performing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Fields shown only when "Performing" is selected -->
+                <div id="performingFields" style="display:none;" aria-hidden="true">
+                    <div class="form-group">
+                        <label for="userGenre">Genre</label>
+                        <select id="userGenre" name="genre">
+                            <option value="">Select genre...</option>
+                            <option value="house">House</option>
+                            <option value="garage">Garage</option>
+                            <option value="dnb">Drum and Bass</option>
+                            <option value="dubstep">Dubstep</option>
+                            <option value="electro">Electro</option>
+                            <option value="techno">Techno</option>
+                            <option value="trance">Trance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userStageName">Stage Name</label>
+                        <input type="text" id="userStageName" name="StageName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userlinks">Links to Socials, Soundcloud, Spotify etc.</label>                        
+                        <textarea id="userLinks" name="links" rows="5" cols="33"></textarea>
+                    
+                    </div>
+
+                    <div class="form-group">
+                    <label for="userPhone">Phone Number</label>
+                    <input type="tel" id="userPhone" name="phone" required>
+                
+                    <div class="form-group">
+                        <label for="userPostcode">Post Code</label>
+                        <input type="text" id="userPostcode" name="phone" required>
+                    </div>
+
+                </div>
+                    <div class="form-group">
+                        <label class="form-group-title">Events You Are Interested In</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="eventMusic" name="event" value="music">
+                                <span>Music</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="eventNetworking" name="event" value="networking">
+                                <span>Networking</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                (function () {
+                    var occupation = document.getElementById('userOccupation');
+                    var performingFields = document.getElementById('performingFields');
+
+                    function togglePerformingFields(show) {
+                        performingFields.style.display = show ? '' : 'none';
+                        performingFields.setAttribute('aria-hidden', !show);
+                        var controls = performingFields.querySelectorAll('input, select, textarea, button');
+                        controls.forEach(function (el) { el.disabled = !show; });
+                    }
+
+                    occupation.addEventListener('change', function () {
+                        togglePerformingFields(this.value === 'performing');
+                    });
+
+                    // Initialize on load (in case of browser autofill or back navigation)
+                    togglePerformingFields(occupation.value === 'performing');
+                })();
+                </script>
                 <div class="form-group">
                     <label class="form-group-title">Events You Are Interested In</label>
                     <div class="checkbox-group">
