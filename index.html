@@ -18,7 +18,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="performers.html">Performers</a></li>
+                <li><a href="performers.html">Wall of Fame</a></li>
             </ul>
         </nav>
     </header>
@@ -31,9 +31,9 @@
 
     <!-- Modal Popup Form -->
     <div class="modal-overlay" id="modalOverlay">
+        
         <div class="modal-content">
             <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
-            <h2>Join Us</h2>
             <form action="https://formspree.io/f/xeeeawwp" method="POST" id="joinForm">
                 <div class="form-group">
                     <label for="userName">Name</label>
@@ -53,12 +53,25 @@
                         <option value="other">Other</option>
                     </select>
                 </div>
-
                 <!-- Fields shown only when "Performing" is selected -->
+                
+                
                 <div id="performingFields" style="display:none;" aria-hidden="true">
                     <div class="form-group">
+                        <label for="userStageName">Stage Name</label>
+                        <input type="text" id="userStageName" name="stageName" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="userPhone">Phone Number</label>
+                        <input type="tel" id="userPhone" name="phone" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="userPostcode">Post Code</label>
+                        <input type="text" id="userPostcode" name="postcode" disabled>
+                    </div>
+                    <div class="form-group">
                         <label for="userGenre">Genre</label>
-                        <select id="userGenre" name="genre">
+                        <select id="userGenre" name="genre" disabled>
                             <option value="">Select genre...</option>
                             <option value="house">House</option>
                             <option value="garage">Garage</option>
@@ -70,86 +83,39 @@
                             <option value="other">Other</option>
                         </select>
                     </div>
-
                     <div class="form-group">
-                        <label for="userStageName">Stage Name</label>
-                        <input type="text" id="userStageName" name="StageName">
+                        <label for="userLinks">Links to Socials, Soundcloud, Spotify etc.</label>
+                        <textarea id="userLinks" name="links" rows="5" cols="33" disabled></textarea>
                     </div>
-
-                    <div class="form-group">
-                        <label for="userlinks">Links to Socials, Soundcloud, Spotify etc.</label>                        
-                        <textarea id="userLinks" name="links" rows="5" cols="33"></textarea>
                     
-                    </div>
-
-                    <div class="form-group">
-                    <label for="userPhone">Phone Number</label>
-                    <input type="tel" id="userPhone" name="phone" required>
-                
-                    <div class="form-group">
-                        <label for="userPostcode">Post Code</label>
-                        <input type="text" id="userPostcode" name="phone" required>
-                    </div>
-
+                    
                 </div>
-                    <div class="form-group">
-                        <label class="form-group-title">Events You Are Interested In</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="eventMusic" name="event" value="music">
-                                <span>Music</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="eventNetworking" name="event" value="networking">
-                                <span>Networking</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
                 <script>
                 (function () {
                     var occupation = document.getElementById('userOccupation');
                     var performingFields = document.getElementById('performingFields');
-
                     function togglePerformingFields(show) {
                         performingFields.style.display = show ? '' : 'none';
                         performingFields.setAttribute('aria-hidden', !show);
                         var controls = performingFields.querySelectorAll('input, select, textarea, button');
                         controls.forEach(function (el) { el.disabled = !show; });
                     }
-
                     occupation.addEventListener('change', function () {
                         togglePerformingFields(this.value === 'performing');
                     });
-
                     // Initialize on load (in case of browser autofill or back navigation)
                     togglePerformingFields(occupation.value === 'performing');
                 })();
                 </script>
-                <div class="form-group">
-                    <label class="form-group-title">Events You Are Interested In</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="eventMusic" name="event" value="music">
-                            <span>Music</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="eventNetworking" name="event" value="networking">
-                            <span>Networking</span>
-                        </label>
-                    </div>
-                </div>
-                -->
+                
                 <div class="form-actions">
-                    <button type="submit" class="submit-button">Join us</button>
+                    <button type="submit" class="submit-button">Register</button>
                     <button type="button" class="cancel-button" id="cancelButton">Cancel</button>
                 </div>
                 
             </form>
         </div>
     </div>
-
     <script src="js/nav.js"></script>
     <script src="js/script.js"></script>
 </body>
