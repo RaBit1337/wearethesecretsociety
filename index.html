@@ -43,19 +43,31 @@
                     <label for="userEmail">Email</label>
                     <input type="email" id="userEmail" name="email" required>
                 </div>
+
+                <!-- Changed: "Interested in" from select to checkboxes -->
                 <div class="form-group">
-                    <label for="userOccupation">Interested in</label>
-                    <select id="userOccupation" name="occupation" required>
-                        <option value="">Select...</option>
-                        <option value="events">Events</option>
-                        <option value="parties">Parties</option>
-                        <option value="performing">Performing</option>
-                        <option value="other">Other</option>
-                    </select>
+                    <span class="form-group-title">Interested in</span>
+                    <div class="checkbox-group" id="occupationGroup" role="group" aria-label="Interested in">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="occupation" value="events">
+                            <span>Events</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="occupation" value="parties">
+                            <span>Parties</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="occupation" value="performing" id="occupationPerforming">
+                            <span>Performing</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="occupation" value="other">
+                            <span>Other</span>
+                        </label>
+                    </div>
                 </div>
+
                 <!-- Fields shown only when "Performing" is selected -->
-                
-                
                 <div id="performingFields" style="display:none;" aria-hidden="true">
                     <div class="form-group">
                         <label for="userStageName">Stage Name</label>
@@ -87,32 +99,48 @@
                         <label for="userLinks">Links to Socials, Soundcloud, Spotify etc.</label>
                         <textarea id="userLinks" name="links" rows="5" cols="33" disabled></textarea>
                     </div>
-                    
-                    
                 </div>
                 <script>
                 (function () {
-                    var occupation = document.getElementById('userOccupation');
+                    var occupationCheckboxes = document.querySelectorAll('input[name="occupation"]');
+                    var performingCheckbox = document.getElementById('occupationPerforming');
                     var performingFields = document.getElementById('performingFields');
+                    var form = document.getElementById('joinForm');
+
                     function togglePerformingFields(show) {
                         performingFields.style.display = show ? '' : 'none';
                         performingFields.setAttribute('aria-hidden', !show);
                         var controls = performingFields.querySelectorAll('input, select, textarea, button');
                         controls.forEach(function (el) { el.disabled = !show; });
                     }
-                    occupation.addEventListener('change', function () {
-                        togglePerformingFields(this.value === 'performing');
+
+                    // Listen for changes on all occupation checkboxes
+                    occupationCheckboxes.forEach(function (cb) {
+                        cb.addEventListener('change', function () {
+                            togglePerformingFields(performingCheckbox.checked);
+                        });
                     });
+
                     // Initialize on load (in case of browser autofill or back navigation)
-                    togglePerformingFields(occupation.value === 'performing');
+                    togglePerformingFields(performingCheckbox.checked);
+
+                    // Validate at least one occupation checkbox is selected before submit
+                    form.addEventListener('submit', function (e) {
+                        var anyChecked = Array.prototype.slice.call(occupationCheckboxes).some(function (cb) { return cb.checked; });
+                        if (!anyChecked) {
+                            e.preventDefault();
+                            alert('Please select at least one option for "Interested in".');
+                            // focus first checkbox for accessibility
+                            if (occupationCheckboxes[0]) occupationCheckboxes[0].focus();
+                        }
+                    });
                 })();
                 </script>
-                
+
                 <div class="form-actions">
                     <button type="submit" class="submit-button">Register</button>
                     <button type="button" class="cancel-button" id="cancelButton">Cancel</button>
                 </div>
-                
             </form>
         </div>
     </div>
