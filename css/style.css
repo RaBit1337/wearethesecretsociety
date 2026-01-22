@@ -1,7 +1,7 @@
 /* Custom Fonts */
 @font-face {
-    font-family: 'Edo';
-    src: url('../fonts/edo.ttf') format('truetype');
+    font-family: 'Road_Rage.otf';
+    src: url('../fonts/Road_Rage.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
@@ -11,7 +11,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Edo', sans-serif;
+    font-family: 'Road_Rage.otf', sans-serif;
 }
 
 body {
