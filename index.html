@@ -47,21 +47,21 @@
                 <!-- Changed: "Interested in" from select to checkboxes -->
                 <div class="form-group">
                     <span class="form-group-title">Interested in</span>
-                    <div class="checkbox-group" id="occupationGroup" role="group" aria-label="Interested in">
+                    <div class="checkbox-group" id="InterestGroup" role="group" aria-label="Interested in">
                         <label class="checkbox-label">
-                            <input type="checkbox" name="occupation" value="events">
+                            <input type="checkbox" name="Interested" value="events">
                             <span>Events</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="occupation" value="parties">
+                            <input type="checkbox" name="Interested" value="parties">
                             <span>Parties</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="occupation" value="performing" id="occupationPerforming">
+                            <input type="checkbox" name="Interested" value="performing" id="interestPerforming">
                             <span>Performing</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="occupation" value="other">
+                            <input type="checkbox" name="Interested" value="other">
                             <span>Other</span>
                         </label>
                     </div>
@@ -101,10 +101,19 @@
                 </div>
                 <script>
                 (function () {
-                    var occupationCheckboxes = document.querySelectorAll('input[name="occupation"]');
-                    var performingCheckbox = document.getElementById('occupationPerforming');
+                    var interestedCheckboxes = document.querySelectorAll('input[name="Interested"]');
+                    var performingCheckbox = document.getElementById('interestPerforming');
                     var performingFields = document.getElementById('performingFields');
                     var form = document.getElementById('joinForm');
+
+                    // Defensive checks
+                    if (!form || !performingFields || !interestedCheckboxes || interestedCheckboxes.length === 0) return;
+                    // If performing checkbox is missing, find it among the interested checkboxes
+                    if (!performingCheckbox) {
+                        performingCheckbox = Array.prototype.slice.call(interestedCheckboxes).find(function (cb) {
+                            return cb.value === 'performing';
+                        }) || null;
+                    }
 
                     function togglePerformingFields(show) {
                         performingFields.style.display = show ? '' : 'none';
@@ -113,24 +122,23 @@
                         controls.forEach(function (el) { el.disabled = !show; });
                     }
 
-                    // Listen for changes on all occupation checkboxes
-                    occupationCheckboxes.forEach(function (cb) {
+                    // Listen for changes on all interest checkboxes (if any)
+                    interestedCheckboxes.forEach(function (cb) {
                         cb.addEventListener('change', function () {
-                            togglePerformingFields(performingCheckbox.checked);
+                            togglePerformingFields(performingCheckbox && performingCheckbox.checked);
                         });
                     });
 
                     // Initialize on load (in case of browser autofill or back navigation)
-                    togglePerformingFields(performingCheckbox.checked);
+                    togglePerformingFields(performingCheckbox && performingCheckbox.checked);
 
-                    // Validate at least one occupation checkbox is selected before submit
+                    // Validate at least one interest checkbox is selected before submit
                     form.addEventListener('submit', function (e) {
-                        var anyChecked = Array.prototype.slice.call(occupationCheckboxes).some(function (cb) { return cb.checked; });
+                        var anyChecked = Array.prototype.slice.call(interestedCheckboxes).some(function (cb) { return cb.checked; });
                         if (!anyChecked) {
                             e.preventDefault();
                             alert('Please select at least one option for "Interested in".');
-                            // focus first checkbox for accessibility
-                            if (occupationCheckboxes[0]) occupationCheckboxes[0].focus();
+                            if (interestedCheckboxes[0]) interestedCheckboxes[0].focus();
                         }
                     });
                 })();
