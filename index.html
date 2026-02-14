@@ -93,8 +93,51 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="userLinks">Links to Socials, Soundcloud, Spotify etc.</label>
-                        <textarea id="userLinks" name="links" rows="5" cols="33" disabled></textarea>
+                        <span class="form-group-title">Links to Socials, Soundcloud, Spotify etc.</span>
+                        <div class="social-links-group">
+                            <div class="social-link-row">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="linkSoundcloud" data-link-input="soundcloudLink">
+                                    <span>Soundcloud</span>
+                                </label>
+                                <input type="url" id="soundcloudLink" name="soundcloud" placeholder="Paste your Soundcloud link" disabled class="social-link-input">
+                            </div>
+                            <div class="social-link-row">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="linkSpotify" data-link-input="spotifyLink">
+                                    <span>Spotify</span>
+                                </label>
+                                <input type="url" id="spotifyLink" name="spotify" placeholder="Paste your Spotify link" disabled class="social-link-input">
+                            </div>
+                            <div class="social-link-row">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="linkInstagram" data-link-input="instagramLink">
+                                    <span>Instagram</span>
+                                </label>
+                                <input type="url" id="instagramLink" name="instagram" placeholder="Paste your Instagram link" disabled class="social-link-input">
+                            </div>
+                            <div class="social-link-row">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="linkYouTube" data-link-input="youtubeLink">
+                                    <span>YouTube</span>
+                                </label>
+                                <input type="url" id="youtubeLink" name="youtube" placeholder="Paste your YouTube link" disabled class="social-link-input">
+                            </div>
+                            <div class="social-link-row">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="linkTwitter" data-link-input="twitterLink">
+                                    <span>Twitter / X</span>
+                                </label>
+                                <input type="url" id="twitterLink" name="twitter" placeholder="Paste your Twitter/X link" disabled class="social-link-input">
+                            </div>
+                            <div class="social-link-row">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="linkOther" data-link-input="otherLink">
+                                    <span>Other</span>
+                                </label>
+                                <input type="url" id="otherLink" name="otherLink" placeholder="Paste your link" disabled class="social-link-input">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <script>
@@ -117,7 +160,10 @@
                         performingFields.style.display = show ? '' : 'none';
                         performingFields.setAttribute('aria-hidden', !show);
                         var controls = performingFields.querySelectorAll('input, select, textarea, button');
-                        controls.forEach(function (el) { el.disabled = !show; });
+                        controls.forEach(function (el) {
+                            if (el.classList && el.classList.contains('social-link-input')) return;
+                            el.disabled = !show;
+                        });
                     }
 
                     // Listen for changes on all interest checkboxes (if any)
@@ -129,6 +175,33 @@
 
                     // Initialize on load (in case of browser autofill or back navigation)
                     togglePerformingFields(performingCheckbox && performingCheckbox.checked);
+
+                    // Social links: show/enable input when checkbox is checked
+                    var socialCheckboxes = document.querySelectorAll('.social-links-group input[type="checkbox"]');
+                    socialCheckboxes.forEach(function (cb) {
+                        var inputId = cb.getAttribute('data-link-input');
+                        var linkInput = inputId ? document.getElementById(inputId) : null;
+                        if (!linkInput) return;
+
+                        function updateLinkInput() {
+                            var show = cb.checked && performingFields.style.display !== 'none';
+                            linkInput.style.display = show ? 'block' : 'none';
+                            linkInput.disabled = !show;
+                            if (!show) linkInput.value = '';
+                        }
+
+                        cb.addEventListener('change', updateLinkInput);
+                        updateLinkInput();
+                    });
+
+                    // Re-run social link state when performing fields are toggled
+                    var origToggle = togglePerformingFields;
+                    togglePerformingFields = function (show) {
+                        origToggle(show);
+                        socialCheckboxes.forEach(function (cb) {
+                            cb.dispatchEvent(new Event('change'));
+                        });
+                    };
 
                     // Validate at least one interest checkbox is selected before submit
                     form.addEventListener('submit', function (e) {
